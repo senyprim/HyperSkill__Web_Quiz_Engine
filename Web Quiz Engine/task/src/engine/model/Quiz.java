@@ -1,29 +1,32 @@
 package engine.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Quiz {
-    @JsonIgnore
     private int id;
     private String title;
     private String text;
     private String[] options;
     @JsonIgnore
-    private int idAnswer;
+    private int answer;
 
-    public Quiz(String title, String text, String[] options,int answer) {
+    public Quiz() {
+    }
+
+    public Quiz(String title, String text, String[] options, int answer) {
         this.title = title;
         this.text = text;
         this.options = options;
-        this.idAnswer = answer;
+        this.answer = answer;
     }
-
-    public int getIdAnswer() {
-        return idAnswer;
+    @JsonIgnore
+    public int getAnswer() {
+        return answer;
     }
-
-    public void setIdAnswer(int answer) {
-        this.idAnswer = answer;
+    @JsonProperty
+    public void setAnswer(int answer) {
+        this.answer = answer;
     }
 
     public int getId() {
@@ -59,6 +62,6 @@ public class Quiz {
     }
 
     public  boolean checkAnswer(int idAnswer){
-        return idAnswer==getIdAnswer();
+        return idAnswer== getAnswer();
     }
 }

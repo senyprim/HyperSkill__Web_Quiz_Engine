@@ -53,11 +53,11 @@ public class QuizServiceImp implements QuizService{
 
 
     public QuizServiceImp() {
-        Quiz quiz = new Quiz("The Java Logo",
-                "What is depicted on the Java logo?",
-                new String[]{"Robot","Tea leaf","Cup of coffee","Bug"},
-                2);
-        this.create(quiz);
+//        Quiz quiz = new Quiz("The Java Logo",
+//                "What is depicted on the Java logo?",
+//                new String[]{"Robot","Tea leaf","Cup of coffee","Bug"},
+//                2);
+//        this.create(quiz);
     }
 
 }
