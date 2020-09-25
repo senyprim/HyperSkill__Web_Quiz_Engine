@@ -1,6 +1,6 @@
-package service;
+package engine.service;
 
-import model.Quiz;
+import engine.model.Quiz;
 
 import java.util.List;
 
@@ -15,5 +15,7 @@ public interface QuizService {
     boolean update(Quiz quiz,int id);
 
     boolean delete(int id);
+
+    boolean checkAnswer(int id,int idAnswer);
 
 }

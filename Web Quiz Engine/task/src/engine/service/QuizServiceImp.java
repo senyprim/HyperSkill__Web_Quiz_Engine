@@ -1,6 +1,6 @@
-package service;
+package engine.service;
 
-import model.Quiz;
+import engine.model.Quiz;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -45,4 +45,19 @@ public class QuizServiceImp implements QuizService{
         DATABASE.remove(id);
         return true;
     }
+
+    @Override
+    public boolean checkAnswer(int id, int idAnswer) {
+        return read(id).checkAnswer(idAnswer);
+    }
+
+
+    public QuizServiceImp() {
+        Quiz quiz = new Quiz("The Java Logo",
+                "What is depicted on the Java logo?",
+                new String[]{"Robot","Tea leaf","Cup of coffee","Bug"},
+                2);
+        this.create(quiz);
+    }
+
 }
