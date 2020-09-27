@@ -1,6 +1,8 @@
 package engine.service;
 
+import engine.model.Answers;
 import engine.model.Quiz;
+import engine.model.Result;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,8 +13,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class QuizServiceImp implements QuizService{
-    private static final Map<Integer,Quiz> DATABASE = new HashMap<>();
-    private static final AtomicInteger ID = new AtomicInteger();
+    private final Map<Integer,Quiz> DATABASE = new HashMap<>();
+    private final AtomicInteger ID = new AtomicInteger();
 
     @Override
     public void create(Quiz quiz) {
@@ -22,8 +24,8 @@ public class QuizServiceImp implements QuizService{
     }
 
     @Override
-    public List<Quiz> readAll() {
-        return new ArrayList<>(DATABASE.values());
+    public Quiz[] read() {
+        return DATABASE.values().toArray(new Quiz[0]);
     }
 
     @Override
@@ -47,17 +49,8 @@ public class QuizServiceImp implements QuizService{
     }
 
     @Override
-    public boolean checkAnswer(int id, int idAnswer) {
-        return read(id).checkAnswer(idAnswer);
-    }
-
-
-    public QuizServiceImp() {
-//        Quiz quiz = new Quiz("The Java Logo",
-//                "What is depicted on the Java logo?",
-//                new String[]{"Robot","Tea leaf","Cup of coffee","Bug"},
-//                2);
-//        this.create(quiz);
+    public Result checkAnswer(int id, Answers answers) {
+        return new Result(read(id).checkAnswer(answers));
     }
 
 }

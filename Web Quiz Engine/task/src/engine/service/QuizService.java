@@ -1,6 +1,8 @@
 package engine.service;
 
+import engine.model.Answers;
 import engine.model.Quiz;
+import engine.model.Result;
 
 import java.util.List;
 
@@ -8,7 +10,7 @@ public interface QuizService {
 
     void create(Quiz quiz);
 
-    List<Quiz> readAll();
+    Quiz[] read();
 
     Quiz read(int id);
 
@@ -16,6 +18,6 @@ public interface QuizService {
 
     boolean delete(int id);
 
-    boolean checkAnswer(int id,int idAnswer);
+    Result checkAnswer(int id, Answers answers);
 
 }

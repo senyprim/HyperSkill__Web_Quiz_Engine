@@ -1,22 +1,24 @@
 package engine.service;
 
 import ch.qos.logback.core.net.server.Client;
+import engine.model.Answers;
 import engine.model.Quiz;
+import engine.model.QuizItemNotFoundException;
+import engine.model.Result;
 import io.micrometer.core.ipc.http.HttpSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/quizzes")
 public class QuizController {
-    private final String RESPONSE_RIGHT_ANSWER="{\"success\":true,\"feedback\":\"Congratulations, you're right!\"}";
-    private final String RESPONSE_WRONG_ANSWER="{\"success\":false,\"feedback\":\"Wrong answer! Please, try again.\"}";
-
 
     private class QuizAnswer{
 
@@ -27,40 +29,28 @@ public class QuizController {
         this.quizService = quizService;
     }
 
-    @PostMapping (value = "/quizzes")
-    public ResponseEntity<Quiz> create(@RequestBody Quiz quiz){
+    @PostMapping (consumes = "application/json")
+    public ResponseEntity<Quiz> create(@Valid @RequestBody Quiz quiz){
         quizService.create(quiz);
         return new ResponseEntity<>(quiz,HttpStatus.OK);
     }
 
-    @GetMapping (value = "/quizzes/{id}")
+    @GetMapping (value = "/{id}")
     public ResponseEntity<Quiz> read(@PathVariable(name="id") int id){
         final Quiz item = quizService.read(id);
-
-        return  item!=null
-                ?new ResponseEntity<>(item, HttpStatus.OK)
-                :new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (item==null) throw new QuizItemNotFoundException(id);
+        return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
-
-
-    @GetMapping (value="/quizzes")
-    public ResponseEntity<List<Quiz>> read(){
-        List<Quiz> items = quizService.readAll();
-
-        return  items!=null
-                ?new ResponseEntity<>(items, HttpStatus.OK)
-                :new ResponseEntity<>(new ArrayList<>(),HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<Quiz[]> read(){
+        return new ResponseEntity<>(quizService.read(), HttpStatus.OK);
     }
 
-
-
-    @PostMapping(value="/quizzes/{id}/solve")
-    public ResponseEntity<String> checkAnswer(@PathVariable(name="id") int id,@RequestParam("answer") int idAnswer){
+    @PostMapping(value="/{id}/solve")
+    public ResponseEntity<Result> checkAnswer(@PathVariable(name="id") int id,@RequestBody Answers answers){
         final Quiz item = quizService.read(id);
-        if (item==null)  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return  item.checkAnswer(idAnswer)
-                ? new ResponseEntity<>(RESPONSE_RIGHT_ANSWER,HttpStatus.OK)
-                : new ResponseEntity<>(RESPONSE_WRONG_ANSWER,HttpStatus.OK);
+        if (item==null)  throw  new QuizItemNotFoundException(id);
+        return  new ResponseEntity<>(new Result(item.checkAnswer(answers)),HttpStatus.OK);
     }
 }
