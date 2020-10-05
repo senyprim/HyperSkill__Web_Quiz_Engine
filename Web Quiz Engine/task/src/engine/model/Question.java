@@ -23,7 +23,7 @@ public class Question {
     @NotBlank(message = "Text should not be empty")
     private String text;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name="questionId")
     @NotNull(message = "Size must be 2 and much")
     @Size(min = 2, message = "Size must be 2 and much")
@@ -73,7 +73,6 @@ public class Question {
             addAnswer(answers[i],i);
     }
 
-
     @JsonSetter("answer")
     public void setRight(int[] numbers){
         Set<Integer> sets = Arrays.stream(
@@ -100,5 +99,18 @@ public class Question {
                 .collect(Collectors.toSet());
 
         return setNumber.equals(setRightAnswer);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Question question = (Question) o;
+        return id == question.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

@@ -1,5 +1,6 @@
 package engine.service;
 
+import engine.model.Account;
 import engine.model.Question;
 import engine.model.QuizItemNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +15,15 @@ public class QuestionService {
     @Autowired
     QuestionRepo questionRepo;
 
-    public Collection<? extends Question> getAllQuestions(){
-        List<Question> questions = new ArrayList<>();
-        questionRepo.findAll().forEach(questions::add);
-        return questions;
+    public Collection<Question> getAllQuestions(){
+        return (List<Question>)questionRepo.findAll();
     }
 
     public Question addQuestion(Question question){
         return questionRepo.save(question);
     }
+    public void deleteQuestion(Question question){questionRepo.delete(question);}
+    public void deleteQuestionById(int id){questionRepo.deleteById(id);}
 
     public Optional<Question> getQuestionById(int id){
         return questionRepo.findById(id);
