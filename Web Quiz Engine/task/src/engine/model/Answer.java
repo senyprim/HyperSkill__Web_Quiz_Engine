@@ -1,11 +1,19 @@
 package engine.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Answer {
     @Id
     @GeneratedValue
@@ -17,45 +25,10 @@ public class Answer {
     @JsonIgnore
     private boolean rightAns;
 
-    public Answer() {
-    }
-
     public Answer(String answer, int number, boolean right) {
         this.answer=answer;
         this.ansNumber =number;
         this.rightAns = right;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
-
-    public int getAnsNumber() {
-        return ansNumber;
-    }
-
-    public void setAnsNumber(int ansNumber) {
-        this.ansNumber = ansNumber;
-    }
-
-    public boolean isRightAns() {
-        return rightAns;
-    }
-
-    public void setRightAns(boolean rightAns) {
-        this.rightAns = rightAns;
     }
 
     @Override

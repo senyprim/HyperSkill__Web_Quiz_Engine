@@ -19,7 +19,7 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Account {
+public class Account implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
@@ -30,12 +30,11 @@ public class Account {
     @JsonProperty("email")
     private String username;
 
-    //@Pattern(regexp = "^[a-zA-Z0-9]{5,}$")
     @Size(min = 5)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY,value = "password")
     private String password;
 
-    @OneToMany (fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name="account_id")
     private List<Question> questions;
 
@@ -59,5 +58,30 @@ public class Account {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.asList(Role.USER);
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

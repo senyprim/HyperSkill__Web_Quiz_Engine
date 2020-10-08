@@ -25,20 +25,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/actuator/shutdown","/api/register")
+        http.csrf().disable().authorizeRequests()
+                .antMatchers("/h2-console/**","/actuator/shutdown","/api/register")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
-        .and()
-                .httpBasic()
-        .and()
-                .csrf()
-                .disable();
-
+                .and()
+                .httpBasic();
     }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

@@ -23,10 +23,9 @@ public class AccountService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Account account =  accountRepo.findByUsername(username).orElseThrow(
+        UserDetails account =  (UserDetails)accountRepo.findByUsername(username).orElseThrow(
                 ()->new UsernameNotFoundException("Username["+username+"] not found"));
-        return new User(account.getUsername(),account.getPassword()
-                , Collections.singletonList(Role.USER));
+        return account;
     }
     public Account loadAccountByUsername(String username){
         return   accountRepo.findByUsername(username).orElse(null);
@@ -43,7 +42,6 @@ public class AccountService implements UserDetailsService {
             return false;
         }
     }
-
     public Account updateAccount(Account account){
         return accountRepo.save(account);
     }

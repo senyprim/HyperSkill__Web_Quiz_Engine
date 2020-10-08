@@ -23,11 +23,10 @@ public class Question {
     @NotBlank(message = "Text should not be empty")
     private String text;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="questionId")
     @NotNull(message = "Size must be 2 and much")
     @Size(min = 2, message = "Size must be 2 and much")
-
     private List<Answer> answers;
 
     public Question() {}
