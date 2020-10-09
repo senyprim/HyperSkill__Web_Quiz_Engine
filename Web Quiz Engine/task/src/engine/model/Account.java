@@ -31,7 +31,7 @@ public class Account implements UserDetails {
     private String username;
 
     @Size(min = 5)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY,value = "password")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @OneToMany(fetch = FetchType.EAGER)
@@ -46,7 +46,6 @@ public class Account implements UserDetails {
         if (this.questions==null) return true;
         return this.questions.remove(question);
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

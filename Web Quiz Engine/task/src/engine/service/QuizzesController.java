@@ -68,7 +68,7 @@ public class QuizzesController {
     @GetMapping (value = "/api/quizzes")
     public Page<Question> read(
             @RequestParam(name = "page", defaultValue = "0") Integer pageNo
-            ,@RequestParam(name="size", defaultValue = "3") Integer pageSize
+            ,@RequestParam(name="size", defaultValue = "10") Integer pageSize
             ,@RequestParam(name="sort", defaultValue = "id") String sortBy)
     {
         return questionService.getAllQuestions(pageNo,pageSize,sortBy);
@@ -78,7 +78,7 @@ public class QuizzesController {
     @GetMapping (value = "/api/quizzes/completed")
     public Page<Solved> readSolved(
             @RequestParam(name = "page", defaultValue = "0") Integer pageNo
-            ,@RequestParam(name="size", defaultValue = "3") Integer pageSize
+            ,@RequestParam(name="size", defaultValue = "10") Integer pageSize
             ,@RequestParam(name="sort", defaultValue = "solved") String sortBy
             ,Principal principal
     )
@@ -125,7 +125,7 @@ public class QuizzesController {
         if (!currentAccount.removeQuestion(question.get())) {
             return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
         }
-        questionService.deleteQuestionById(id);
+        questionService.deleteQuestion(question.get());
         return new ResponseEntity<>(question.get(), HttpStatus.NO_CONTENT);
     }
 }

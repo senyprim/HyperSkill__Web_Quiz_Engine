@@ -1,6 +1,7 @@
 package engine.model;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class Question {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @NotBlank(message = "Title should not be empty")
@@ -28,6 +29,11 @@ public class Question {
     @NotNull(message = "Size must be 2 and much")
     @Size(min = 2, message = "Size must be 2 and much")
     private List<Answer> answers;
+
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "question")
+    @JsonIgnore
+    private List<Solved> solvedList;
+
 
     public Question() {}
 

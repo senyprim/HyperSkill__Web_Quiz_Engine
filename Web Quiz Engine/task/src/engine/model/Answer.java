@@ -16,7 +16,7 @@ import java.util.Objects;
 @NoArgsConstructor
 public class Answer {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private int id;
     private String answer;
